@@ -1,0 +1,28 @@
+{
+  "name": "cyrus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rapakavivek6-sys/Cyrus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/rapakavivek6-sys/Cyrus/issues"
+  },
+  "homepage": "https://github.com/rapakavivek6-sys/Cyrus#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3",
+    "pug": "^3.0.3"
+  }
+
+}

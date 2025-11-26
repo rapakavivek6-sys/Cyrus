@@ -1,0 +1,40 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+nav a {
+  margin-right: 1rem;
+  text-decoration: none;
+}
+
+main {
+  padding: 1.5rem 2rem;
+}
+
+.artwork-list {
+  list-style: none;
+  padding: 0;
+}
+
+.artwork-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
