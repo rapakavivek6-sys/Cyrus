@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  section.section.section-profile
+    .profile-layout
+      .profile-sidebar
+        .profile-card
+          .profile-avatar
+            span.avatar-initial #{(profileUser && profileUser.name && profileUser.name[0]) || 'S'}
+          h2.profile-name= profileUser && profileUser.name
+          p.profile-handle= profileUser && profileUser.handle
+          p.profile-bio= profileUser && profileUser.bio
+
+          ul.profile-stats
+            li
+              span.stat-number #{artworks ? artworks.length : 0}
+              span.stat-label Artworks
+            li
+              span.stat-number 4.8★
+              span.stat-label Rating
+
+          a.btn-outline.btn-full(href="/profile/edit") Edit Profile
+
+      .profile-main
+        if editMode
+          h3.section-title Edit Profile
+          form(method="post", action="/profile/edit")
+            .form-group
+              label(for="name") Name
+              input#name(type="text", name="name", required, value=profileUser.name)
+            .form-group
+              label(for="bio") Bio
+              textarea#bio(name="bio", rows="3")= profileUser.bio
+            button.btn-primary(type="submit") Save Changes
+        else
+          h3.section-title My Artworks
+          if artworks && artworks.length
+            .gallery-grid.gallery-grid-small
+              each art in artworks
+                .art-card
+                  .art-thumb(style=`background-image:url('${art.image_url || "/images/sample-art-1.jpg"}')`)
+                  .art-body
+                    h3.art-title= art.title
+                    p.art-meta-small #{art.pixels_count || 0} pixels • #{art.contributors_count || 1} creators
+          else
+            p.empty-state You haven't saved any artworks yet. Jump into the canvas!

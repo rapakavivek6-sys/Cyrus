@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: cyrus-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: cyrus_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - cyrus-db-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  app:
+    build: .
+    container_name: cyrus-app
+    restart: always
+    command: npm run dev
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      SESSION_SECRET: supersecretcyrus
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: example
+      DB_NAME: cyrus_db
+    depends_on:
+      - db
+
+volumes:
+  cyrus-db-data:

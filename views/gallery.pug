@@ -1,0 +1,282 @@
+doctype html
+html(lang="en" data-theme="dark")
+  head
+    meta(charset="UTF-8")
+    title CYRUS · Gallery
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      :root {
+        --transition-fast: 0.25s ease;
+        --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --radius-pill: 999px;
+        --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.35);
+      }
+      :root[data-theme="dark"] {
+        --bg-body: radial-gradient(circle at top, #020617 0, #020617 45%, #020617 100%);
+        --bg-elevated: rgba(15, 23, 42, 0.96);
+        --fg-main: #e5e7eb;
+        --fg-muted: #9ca3af;
+        --accent-1: #f97316;
+        --accent-2: #ec4899;
+        --accent-3: #22d3ee;
+      }
+      :root[data-theme="light"] {
+        --bg-body: radial-gradient(circle at top, #fefce8 0, #f3f4f6 40%, #e5e7eb 100%);
+        --bg-elevated: rgba(255, 255, 255, 0.96);
+        --fg-main: #111827;
+        --fg-muted: #6b7280;
+        --accent-1: #ea580c;
+        --accent-2: #db2777;
+        --accent-3: #0ea5e9;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { height: 100%; }
+      body {
+        font-family: var(--font-body);
+        background: var(--bg-body);
+        color: var(--fg-main);
+      }
+      a { color: inherit; text-decoration: none; }
+
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 18px 18px 40px;
+      }
+      header.header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .brand-badge {
+        width: 30px;
+        height: 30px;
+        border-radius: 12px;
+        background: conic-gradient(from 120deg, #f97316, #ec4899, #22d3ee, #f97316);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #fff;
+        box-shadow: 0 0 0 1px rgba(15,23,42,0.7), 0 12px 26px rgba(0,0,0,0.6);
+      }
+      .brand-text-title {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .brand-text-sub {
+        font-size: 11px;
+        color: var(--fg-muted);
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .theme-toggle {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-pill);
+        border: 1px solid rgba(148,163,184,0.6);
+        background: rgba(15,23,42,0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      :root[data-theme="light"] .theme-toggle {
+        background: rgba(255,255,255,0.96);
+      }
+      .theme-toggle-icon {
+        position: absolute;
+        font-size: 16px;
+        transition: transform 0.4s ease, opacity 0.4s ease;
+      }
+      .theme-toggle-icon.sun { transform: translateY(0); opacity: 1; }
+      .theme-toggle-icon.moon { transform: translateY(200%); opacity: 0; }
+      :root[data-theme="light"] .theme-toggle-icon.sun { transform: translateY(-200%); opacity: 0; }
+      :root[data-theme="light"] .theme-toggle-icon.moon { transform: translateY(0); opacity: 1; }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+        font-size: 11px;
+      }
+      .filter-pill {
+        padding: 4px 9px;
+        border-radius: var(--radius-pill);
+        border: 1px solid rgba(148,163,184,0.7);
+        background: rgba(15,23,42,0.85);
+        color: var(--fg-muted);
+        cursor: pointer;
+      }
+      :root[data-theme="light"] .filter-pill {
+        background: rgba(255,255,255,0.96);
+      }
+
+      .gallery-card {
+        background: var(--bg-elevated);
+        border-radius: 22px;
+        padding: 16px 16px 18px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(148,163,184,0.6);
+      }
+      .gallery-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .gallery-title {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .gallery-sub {
+        font-size: 11px;
+        color: var(--fg-muted);
+      }
+      .grid-art {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 12px;
+        margin-top: 10px;
+      }
+      .art-card {
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+        background: radial-gradient(circle at 0 0, rgba(15,23,42,0.85), #020617);
+        border: 1px solid rgba(51,65,85,0.9);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      }
+      :root[data-theme="light"] .art-card {
+        background: radial-gradient(circle at 0 0, rgba(15,23,42,0.06), #f9fafb);
+      }
+      .art-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 48px rgba(15,23,42,0.85);
+        border-color: var(--accent-2);
+      }
+      .art-thumb {
+        height: 120px;
+        background-size: cover;
+        background-position: center;
+        background-image: linear-gradient(135deg, rgba(14,165,233,0.4), rgba(236,72,153,0.4));
+      }
+      .art-body {
+        padding: 8px 9px 9px;
+        font-size: 12px;
+      }
+      .art-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+      }
+      .art-title {
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .art-tag-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        background: var(--accent-3);
+        box-shadow: 0 0 0 4px rgba(34,211,238,0.35);
+      }
+      .art-meta {
+        font-size: 11px;
+        color: var(--fg-muted);
+      }
+      .art-meta span + span::before {
+        content: "•";
+        margin: 0 4px;
+        opacity: 0.6;
+      }
+
+  body
+    .page
+      header.header
+        .brand
+          .brand-badge C
+          div
+            .brand-text-title CYRUS
+            .brand-text-sub Collaborative Gallery
+        .header-actions
+          a(href="/canvas" style="font-size:12px; text-decoration:underline; margin-right:4px;") Open canvas
+          button#themeToggle.theme-toggle(type="button" aria-label="Toggle colour theme")
+            span.theme-toggle-icon.sun ☀️
+            span.theme-toggle-icon.moon 🌙
+
+      .filters
+        span.filter-pill(data-filter="all") All artworks
+        span.filter-pill(data-filter="team") Team sessions
+        span.filter-pill(data-filter="solo") Solo sessions
+        span.filter-pill(data-filter="event") Event pieces
+
+      .gallery-card
+        .gallery-header
+          div
+            .gallery-title Gallery
+            .gallery-sub Artworks pulled from the CYRUS MySQL database.
+          span(style="font-size:11px; color:var(--fg-muted);") Scroll to explore
+
+        .grid-art
+          // If artworks are passed from backend, render them
+          if artworks && artworks.length
+            each art in artworks
+              article.art-card
+                .art-thumb(style=`background-image:url('${art.imageUrl || ''}')`)
+                .art-body
+                  .art-title-row
+                    h3.art-title= art.title || 'Untitled canvas'
+                    .art-tag-dot
+                  .art-meta
+                    span= (art.ownerName || 'Unknown user')
+                    span= (art.sessionType || 'Session')
+          else
+            // Placeholder cards when no data yet
+            each label in ['Team Jam – Neon City','Solo Study – Pixel Bloom','Workshop – Art Night','Guest Session – Collab Grid']
+              article.art-card
+                .art-thumb
+                .art-body
+                  .art-title-row
+                    h3.art-title= label
+                    .art-tag-dot
+                  .art-meta
+                    span Demo user
+                    span Sample session
+
+    script.
+      // Theme toggle with persistence
+      (function () {
+        const root = document.documentElement;
+        const toggle = document.getElementById("themeToggle");
+        if (!toggle) return;
+        const stored = localStorage.getItem("portfolio-theme");
+        if (stored === "light" || stored === "dark") {
+          root.setAttribute("data-theme", stored);
+        }
+        toggle.addEventListener("click", () => {
+          const current = root.getAttribute("data-theme") || "dark";
+          const next = current === "dark" ? "light" : "dark";
+          root.setAttribute("data-theme", next);
+          localStorage.setItem("portfolio-theme", next);
+        });
+      })();

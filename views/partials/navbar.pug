@@ -1,0 +1,15 @@
+nav.navbar
+  .navbar-inner
+    a.navbar-brand(href="/")
+      span.logo-pill CYRUS
+      span.logo-sub Collaborative Art Board
+
+    ul.nav-links
+      li: a(href="/gallery") Gallery
+      li: a(href="/canvas") Canvas
+      if currentUser
+        li: a(href="/profile") Profile
+        li: a(href="/logout").btn-nav Logout
+      else
+        li: a(href="/login").btn-nav Login
+        li: a(href="/register").btn-primary-nav Register
