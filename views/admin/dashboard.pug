@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  section.section.section-admin
+    h2.section-title Admin Dashboard
+    .admin-stats
+      .admin-stat-card
+        span.stat-label Users
+        span.stat-value= userCount
+      .admin-stat-card
+        span.stat-label Artworks
+        span.stat-value= artworkCount

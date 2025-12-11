@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  section.section
+    .section-header
+      h2.section-title Your Workspaces
+      p.section-subtitle Each workspace is a small team sharing canvases.
+
+    ul.workspace-list
+      if teams && teams.length
+        each t in teams
+          li.workspace-item(reveal)
+            a.workspace-link(href=`/workspaces/${t.id}/canvases`)
+              h3.workspace-name= t.name
+              p.workspace-role You are #{t.role}.
+      else
+        p.no-data You are not in any workspaces yet.

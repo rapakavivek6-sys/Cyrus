@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  section.section.section-artwork
+    .artwork-layout
+      .artwork-image
+        if artwork.image_url
+          img(src=artwork.image_url, alt=artwork.title)
+        else
+          .art-placeholder-large #{artwork.title.charAt(0)}
+
+      .artwork-details
+        h2.section-title= artwork.title
+        if artwork.artist_name
+          p.section-subtitle by #{artwork.artist_name}
+        if artwork.description
+          p.art-description= artwork.description
+
+        a.btn.btn-outline(href="/gallery") ← Back to gallery

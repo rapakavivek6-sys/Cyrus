@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  section.section.section-gallery
+    .section-header
+      h2.section-title Gallery
+      p.section-subtitle Saved collaborative artworks from CYRUS sessions.
+
+    .gallery-grid
+      if artworks && artworks.length
+        each art in artworks
+          .art-card(reveal)
+            a.art-thumb(href=`/gallery/${art.id}`)
+              if art.image_url
+                img(src=art.image_url, alt=art.title)
+              else
+                .art-placeholder #{art.title.charAt(0)}
+            .art-meta
+              h3.art-title= art.title
+              if art.artist_name
+                p.art-artist by #{art.artist_name}
+              p.art-date= art.created_at
+      else
+        p.no-data No artworks yet. Be the first to save one from the canvas!

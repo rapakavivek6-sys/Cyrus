@@ -1,0 +1,60 @@
+extends ../layout
+
+block content
+  section.section.section-canvas
+    .section-header
+      h2.section-title= canvas.name
+      p.section-subtitle Real-time collaborative workspace (max 5 users).
+
+    // ===== TOOLBAR (colour + quick palette + actions) =====
+    .canvas-toolbar
+      // Main colour picker that canvas.js uses
+      .tool-group
+        label.tool-label(for="colorPicker") Colour picker
+        input#colorPicker(type="color", value="#ff007a")
+
+      // Quick preset colours
+      .tool-group
+        span.tool-label Quick colours
+        .color-swatch-row
+          each c in ['#ff007a', '#ff9f1c', '#ffd60a', '#2ec4b6', '#4d9bff', '#9b4dff', '#ffffff', '#000000']
+            button.color-swatch(
+              type="button",
+              data-color=c,
+              style=`background:${c}`
+            )
+
+      // Clear / Save buttons
+      .tool-group.tool-actions
+        button#btnClear.btn.btn-outline(type="button") Clear
+        button#btnSave.btn.btn-primary(type="button") Save Artwork
+
+    // ===== CANVAS AREA =====
+    .canvas-wrapper
+      canvas#cyrusCanvas(
+        width="960",
+        height="540",
+        data-canvas-id=canvas.id
+      )
+
+block scripts
+  // Socket.IO for real-time collaboration
+  script(src="/socket.io/socket.io.js")
+  // Main canvas logic (drawing, sync, save)
+  script(src="/js/canvas.js")
+  // Helper: clicking a swatch updates the colour picker (and triggers its event)
+  script.
+    document.addEventListener('DOMContentLoaded', function () {
+      const picker = document.getElementById('colorPicker');
+      const swatches = document.querySelectorAll('.color-swatch');
+      if (!picker || !swatches.length) return;
+
+      swatches.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const colour = btn.dataset.color;
+          if (!colour) return;
+          picker.value = colour;
+          picker.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+      });
+    });
