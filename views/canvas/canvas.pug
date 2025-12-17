@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  section.section.section-canvas
+    .section-header
+      h2.section-title= canvas.name
+      p.section-subtitle Real-time collaborative workspace (max 5 users).
+
+    .canvas-toolbar
+      .tool-group
+        label(for="colorPicker") Colour
+        input#colorPicker(type="color", value="#ff007a")
+      .tool-group
+        button#btnClear.btn.btn-outline(type="button") Clear
+        button#btnSave.btn.btn-primary(type="button") Save Artwork
+
+    .canvas-wrapper
+      canvas#cyrusCanvas(
+        width="800",
+        height="500",
+        data-canvas-id=canvas.id
+      )
+
+block scripts
+  script(src="/socket.io/socket.io.js")
+  script(src="/js/canvas.js")

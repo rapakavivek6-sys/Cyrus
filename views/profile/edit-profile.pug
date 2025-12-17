@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  section.section.section-auth
+    .auth-card(reveal)
+      h2.section-title Edit Profile
+      form(method="POST", action="/profile/edit")
+        .form-group
+          label(for="display_name") Display name
+          input#display_name(type="text", name="display_name", value=user.display_name)
+
+        .form-group
+          label(for="bio") Bio
+          textarea#bio(name="bio" rows="4")= user.bio
+
+        button.btn.btn-primary(type="submit") Save changes
+
+      a.btn.btn-outline(href="/profile") Cancel

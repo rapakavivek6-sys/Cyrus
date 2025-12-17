@@ -1,0 +1,47 @@
+extends ../layout
+
+block content
+  section.auth-hero
+    .auth-bg-orbit
+    .auth-bg-glow
+
+    .auth-inner
+      .auth-header
+        h1.auth-title Welcome back to
+          span.auth-logo-word CYRUS
+        p.auth-subtitle Your collaborative pixel world awaits.
+        ul.auth-highlight-list
+          li
+            span.bullet-dot
+            | Draw with your team in real time
+          li
+            span.bullet-dot
+            | Access all your active canvases
+          li
+            span.bullet-dot
+            | Continue unfinished artworks any time
+
+      .auth-card
+        h2.section-title Login
+        p.section-subtitle Enter your credentials to continue.
+
+        form(method="POST", action="/login")
+          .form-group
+            label(for="email") Email
+            .input-wrapper
+              span.input-icon ✉
+              input#email(type="email", name="email", required placeholder="you@example.com")
+
+          .form-group
+            label(for="password") Password
+            .input-wrapper
+              span.input-icon 🔒
+              input#password(type="password", name="password", required placeholder="••••••••")
+
+          .auth-actions
+            button.btn.btn-primary.btn-full(type="submit") Login
+            a.btn-link(href="/register") New here? Create an account →
+
+        .auth-footnote
+          p.small-text
+            | Secure login powered by the CYRUS collaboration engine.

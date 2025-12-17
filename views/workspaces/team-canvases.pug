@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  section.section
+    .section-header
+      h2.section-title Team Canvases
+      p.section-subtitle Choose a canvas or create a new one.
+
+    form(method="POST", action=`/workspaces/${teamId}/canvases`)
+      .form-group
+        label(for="name") New canvas name
+        input#name(type="text", name="name", placeholder="New collaborative canvas", required)
+      button.btn.btn-primary(type="submit") Create Canvas
+
+    .canvas-list
+      if canvases && canvases.length
+        each c in canvases
+          .canvas-card(reveal)
+            a(href=`/canvas/${c.id}`)
+              h3.canvas-title= c.name
+              p.canvas-meta Last updated: #{c.updated_at}
+      else
+        p.no-data No canvases yet. Create one above.

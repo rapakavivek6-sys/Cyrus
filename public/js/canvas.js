@@ -1,70 +1,126 @@
-const canvas = document.getElementById("cyrusCanvas");
-const colorPicker = document.getElementById("colorPicker");
-const brushSize = document.getElementById("brushSize");
+const canvas = document.getElementById('cyrusCanvas');
 
 if (canvas) {
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext('2d');
+  const colorPicker = document.getElementById('colorPicker');
+  const btnClear = document.getElementById('btnClear');
+  const btnSave = document.getElementById('btnSave');
+
+  const canvasId = parseInt(canvas.dataset.canvasId, 10);
+
+  const socket = io();
+
   let drawing = false;
-  let currentColor = colorPicker ? colorPicker.value : "#ff00ff";
-  let currentSize = brushSize ? parseInt(brushSize.value, 10) : 8;
+  let currentColor = colorPicker ? colorPicker.value : '#ff007a';
+  const pixelSize = 10;
 
-  function getPos(evt) {
+  function drawPixel(x, y, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, pixelSize, pixelSize);
+  }
+
+  function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function getPos(e) {
     const rect = canvas.getBoundingClientRect();
-    const clientX = evt.clientX ?? (evt.touches && evt.touches[0]?.clientX);
-    const clientY = evt.clientY ?? (evt.touches && evt.touches[0]?.clientY);
-    return {
-      x: clientX - rect.left,
-      y: clientY - rect.top,
-    };
+    const x = Math.floor((e.clientX - rect.left) / pixelSize) * pixelSize;
+    const y = Math.floor((e.clientY - rect.top) / pixelSize) * pixelSize;
+    return { x, y };
   }
 
-  function startDraw(evt) {
+  socket.emit('join_canvas', { canvasId });
+
+  socket.on('canvas_full', () => {
+    alert('This canvas already has 5 active collaborators. Please try again later.');
+    window.location.href = '/workspaces';
+  });
+
+  socket.on('init_canvas', (state) => {
+    clearCanvas();
+    state.forEach(item => {
+      if (item.type === 'pixel') {
+        drawPixel(item.x, item.y, item.color);
+      }
+    });
+  });
+
+  canvas.addEventListener('mousedown', (e) => {
     drawing = true;
-    draw(evt);
-  }
+    const { x, y } = getPos(e);
+    drawPixel(x, y, currentColor);
 
-  function endDraw() {
-    drawing = false;
-    ctx.beginPath();
-  }
+    socket.emit('canvas_update', {
+      canvasId,
+      ops: [{ type: 'pixel', x, y, color: currentColor }]
+    });
+  });
 
-  function draw(evt) {
+  canvas.addEventListener('mousemove', (e) => {
     if (!drawing) return;
-    const { x, y } = getPos(evt);
+    const { x, y } = getPos(e);
+    drawPixel(x, y, currentColor);
 
-    ctx.fillStyle = currentColor;
-    ctx.beginPath();
-    ctx.arc(x, y, currentSize, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  canvas.addEventListener("mousedown", startDraw);
-  canvas.addEventListener("mousemove", draw);
-  canvas.addEventListener("mouseup", endDraw);
-  canvas.addEventListener("mouseleave", endDraw);
-
-  canvas.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    startDraw(e);
+    socket.emit('canvas_update', {
+      canvasId,
+      ops: [{ type: 'pixel', x, y, color: currentColor }]
+    });
   });
-  canvas.addEventListener("touchmove", (e) => {
-    e.preventDefault();
-    draw(e);
-  });
-  canvas.addEventListener("touchend", (e) => {
-    e.preventDefault();
-    endDraw();
+
+  window.addEventListener('mouseup', () => {
+    drawing = false;
   });
 
   if (colorPicker) {
-    colorPicker.addEventListener("input", (e) => {
+    colorPicker.addEventListener('input', (e) => {
       currentColor = e.target.value;
     });
   }
 
-  if (brushSize) {
-    brushSize.addEventListener("input", (e) => {
-      currentSize = parseInt(e.target.value, 10);
+  if (btnClear) {
+    btnClear.addEventListener('click', () => {
+      clearCanvas();
+      socket.emit('clear_canvas', { canvasId });
     });
   }
+
+  if (btnSave) {
+    btnSave.addEventListener('click', async () => {
+      const title = prompt('Artwork title?');
+      if (!title) return;
+
+      const imageUrl = canvas.toDataURL('image/png');
+
+      const res = await fetch('/canvas/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          description: 'Created on CYRUS collaborative canvas',
+          imageUrl
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        alert('Saved to gallery!');
+        window.location.href = '/gallery';
+      } else {
+        alert('Failed to save artwork');
+      }
+    });
+  }
+
+  socket.on('canvas_update', ({ ops }) => {
+    ops.forEach(op => {
+      if (op.type === 'pixel') {
+        drawPixel(op.x, op.y, op.color);
+      }
+    });
+  });
+
+  socket.on('clear_canvas', () => {
+    clearCanvas();
+  });
 }

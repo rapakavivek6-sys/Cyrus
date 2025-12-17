@@ -1,0 +1,18 @@
+header.site-header
+  .logo-area
+    a.logo(href="/")
+      span.logo-mark C
+      span.logo-text CYRUS
+
+  nav.site-nav
+    ul.nav-list
+      li: a(href="/workspaces") Workspaces
+      li: a(href="/gallery") Gallery
+      if currentUserId
+        li: a(href="/profile") Profile
+        li: a(href="/logout") Logout
+      else
+        li: a(href="/login") Login
+        li: a(href="/register") Sign Up
+
+  button.theme-toggle(type="button") 🌓
