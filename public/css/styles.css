@@ -23,17 +23,17 @@
 
 /* DARK MODE DEFAULT */
 body.theme-dark {
-  background: var(--bg-dark);
+  background: radial-gradient(circle at top left, #171720, #050509 60%, #02020a 100%);
   color: var(--text-dark);
 }
 
-/* LIGHT MODE */
+/* LIGHT MODE (if you ever use it) */
 body.theme-light {
   background: var(--bg-light);
   color: var(--text-light);
 }
 
-/* Smooth fade & transitions everywhere */
+/* Global reset-ish */
 * {
   box-sizing: border-box;
   transition: background var(--transition-fast), color var(--transition-fast);
@@ -101,49 +101,40 @@ img {
   color: var(--accent-blue);
 }
 
+/* Theme toggle */
 .theme-toggle {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.4rem;
-  color: inherit;
+  font-size: 1.3rem;
+  margin-left: 1rem;
 }
 
 /* =========================================================
-   MAIN LAYOUT / HERO
+   MAIN LAYOUT / SECTIONS
 ========================================================= */
 
 .main-container {
   padding: 2rem;
 }
 
-.hero {
-  padding: 4rem 2rem;
-  text-align: center;
+.section {
+  padding: 2rem 0;
 }
 
-.hero-title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+.section-header {
+  margin-bottom: 1.5rem;
 }
 
-.highlight {
-  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-  -webkit-background-clip: text;
-  color: transparent;
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
-.hero-subtitle {
-  font-size: 1.2rem;
-  opacity: 0.8;
-  margin-bottom: 2rem;
-}
-
-.hero-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+.section-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
 }
 
 /* =========================================================
@@ -184,7 +175,6 @@ img {
   transform: translateY(-3px);
 }
 
-/* FULL WIDTH BTN */
 .btn-full {
   width: 100%;
   text-align: center;
@@ -214,268 +204,36 @@ textarea:focus {
   border-color: var(--accent-purple);
 }
 
-/* Base auth section (not used heavily now, but kept) */
-.section-auth {
-  display: flex;
-  justify-content: center;
-  padding: 3rem 1.5rem;
-}
-
-/* Pop-in animation */
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 /* =========================================================
-   WORKSPACE / CANVAS / GALLERY / PROFILE
-   (unchanged from previous working version)
+   AUTH HERO (Login / Register)
 ========================================================= */
 
-.workspace-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 2rem;
-}
-
-.workspace-item {
-  padding: 1.2rem;
-  border-radius: 15px;
-  background: var(--card-dark);
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-}
-
-.workspace-item:hover {
-  transform: translateY(-5px);
-  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-}
-
-.workspace-link {
-  color: inherit;
-  text-decoration: none;
-  display: block;
-}
-
-.section-canvas {
-  padding: 2rem;
-}
-
-.canvas-toolbar {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-}
-
-.canvas-wrapper {
-  padding: 1rem;
-  background: #111;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  overflow: auto;
-}
-
-#cyrusCanvas {
-  border-radius: 12px;
-  box-shadow: 0 0 40px rgba(255, 0, 122, 0.3);
-  background: repeating-linear-gradient(
-    45deg,
-    #1a1a1f,
-    #1a1a1f 10px,
-    #1c1c23 10px,
-    #1c1c23 20px
-  );
-}
-
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.art-card {
-  background: var(--card-dark);
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 0 0 18px rgba(0, 0, 0, 0.4);
-}
-
-.art-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 0 30px rgba(255, 0, 122, 0.4);
-}
-
-.art-thumb img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-.art-meta {
-  padding: 1rem;
-}
-
-.profile-layout {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.profile-sidebar {
-  flex: 0 0 260px;
-}
-
-.profile-card {
-  background: var(--card-dark);
-  padding: 1.5rem;
-  border-radius: 16px;
-  box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
-}
-
-.profile-avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 1rem;
-}
-
-.profile-stats {
-  margin-top: 1.5rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.profile-stat {
-  text-align: center;
-}
-
-.profile-stat-number {
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-/* Reveal: disable any hiding – just show content */
-[reveal] {
-  opacity: 1;
-  transform: none;
-}
-
-/* Footer */
-
-.site-footer {
-  padding: 2rem;
-  margin-top: 3rem;
-  text-align: center;
-  opacity: 0.7;
-  font-size: 0.9rem;
-}
-
-/* =========================================================
-   AUTH HERO (SINGLE-COLUMN, BULLETPROOF)
-========================================================= */
-
+/* FIXED: selector should just be .auth-hero */
 .auth-hero {
   position: relative;
   min-height: calc(100vh - 120px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 1.5rem;
+  padding: 3rem 2rem;
   overflow: hidden;
 }
 
-/* Centered inner column */
-
-.auth-inner {
+/* 2-column layout: copy left, card right */
+.auth-layout {
   position: relative;
   width: 100%;
-  max-width: 720px;
-  z-index: 2;
-  display: grid;
-  gap: 2rem;
+  max-width: 1100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
 }
 
-/* Background blobs */
-
-.auth-bg-orbit,
-.auth-bg-glow {
-  position: absolute;
-  border-radius: 999px;
-  filter: blur(40px);
-  opacity: 0.75;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.auth-bg-orbit {
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(
-    circle at 20% 0%,
-    rgba(255, 30, 156, 0.7),
-    transparent 60%
-  );
-  top: -140px;
-  right: -80px;
-  animation: floatOrbit 12s linear infinite alternate;
-}
-
-.auth-bg-glow {
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(
-    circle at 10% 90%,
-    rgba(36, 196, 255, 0.7),
-    transparent 60%
-  );
-  bottom: -120px;
-  left: -80px;
-  animation: floatGlow 16s ease-in-out infinite alternate;
-}
-
-@keyframes floatOrbit {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(-40px, 30px, 0) scale(1.1);
-  }
-}
-
-@keyframes floatGlow {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  100% {
-    transform: translate3d(40px, -20px, 0) scale(1.05);
-  }
-}
-
-/* Header text */
-
-.auth-header {
-  text-align: left;
+/* Left text column */
+.auth-copy {
+  flex: 1 1 0;
+  max-width: 480px;
 }
 
 .auth-title {
@@ -527,9 +285,16 @@ textarea:focus {
   box-shadow: 0 0 12px rgba(36, 196, 255, 0.7);
 }
 
-/* Auth card */
+/* Right panel column */
+.auth-panel {
+  flex: 0 0 380px;
+  display: flex;
+  justify-content: flex-end;
+}
 
+/* Glowing auth card */
 .auth-card {
+  width: 100%;
   background: radial-gradient(
       circle at top left,
       rgba(255, 30, 156, 0.25),
@@ -544,6 +309,17 @@ textarea:focus {
   animation: popIn 0.6s ease;
 }
 
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .auth-card::before {
   content: "";
   position: absolute;
@@ -556,18 +332,11 @@ textarea:focus {
   opacity: 0;
   mix-blend-mode: screen;
   transition: opacity 0.5s ease-out;
+  pointer-events: none; 
 }
 
 .auth-card:hover::before {
   opacity: 1;
-}
-
-.auth-card .section-title {
-  margin-bottom: 0.2rem;
-}
-
-.auth-card .section-subtitle {
-  margin-bottom: 1.4rem;
 }
 
 /* Inputs with icons */
@@ -594,6 +363,7 @@ textarea:focus {
   padding: 0;
   background: transparent;
   width: 100%;
+  color: inherit;
 }
 
 .input-wrapper:focus-within {
@@ -606,7 +376,7 @@ textarea:focus {
   );
 }
 
-/* Actions & footnote */
+/* Auth actions & footnote */
 
 .auth-actions {
   margin-top: 1.6rem;
@@ -625,26 +395,302 @@ textarea:focus {
   cursor: pointer;
 }
 
-.btn-link:hover {
-  text-decoration: underline;
-}
-
 .auth-footnote {
   margin-top: 1rem;
   font-size: 0.75rem;
   color: var(--text-muted);
 }
 
-/* Mobile */
+/* =========================================================
+   CANVAS PAGE
+========================================================= */
 
-@media (max-width: 768px) {
-  .auth-hero {
-    padding: 3rem 1.2rem;
+.section-canvas {
+  padding: 2rem;
+}
+
+/* toolbar row */
+.canvas-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin: 1rem 0 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tool-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tool-group label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* BIG visible colour picker */
+#colorPicker {
+  width: 260px;
+  height: 42px;
+  border-radius: 999px;
+  padding: 0;
+  border: 2px solid var(--accent-pink);
+  background: transparent;
+  box-shadow: 0 0 12px rgba(255, 0, 122, 0.4);
+  cursor: pointer;
+}
+
+/* Main canvas wrapper */
+.canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+/* Fancy canvas border container */
+.canvas-border {
+  position: relative;
+  padding: 10px;
+  border-radius: 18px;
+  display: inline-block;
+
+  /* Gradient neon border matching CYRUS theme */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 122, 0.9),
+    rgba(77, 155, 255, 0.9),
+    rgba(155, 77, 255, 0.9)
+  );
+
+  /* Outer glow */
+  box-shadow:
+    0 0 18px rgba(255, 0, 122, 0.5),
+    0 0 26px rgba(77, 155, 255, 0.4);
+
+  /* Soft pulsing animation */
+  animation: canvasBorderPulse 4s infinite alternate ease-in-out;
+}
+
+/* Pulse animation for the border */
+@keyframes canvasBorderPulse {
+  0% {
+    box-shadow:
+      0 0 14px rgba(255, 0, 122, 0.4),
+      0 0 20px rgba(77, 155, 255, 0.3);
   }
-  .auth-header {
+  100% {
+    box-shadow:
+      0 0 26px rgba(255, 0, 122, 0.9),
+      0 0 38px rgba(77, 155, 255, 0.8);
+  }
+}
+
+/* Actual canvas element */
+#cyrusCanvas {
+  display: block;
+  border-radius: 12px;
+  background: repeating-linear-gradient(
+    45deg,
+    #1a1a1f,
+    #1a1a1f 10px,
+    #1c1c23 10px,
+    #1c1c23 20px
+  );
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+/* =========================================================
+   GALLERY GRID (for /gallery)
+========================================================= */
+
+.section-gallery {
+  padding: 2rem 0;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.art-card {
+  background: var(--card-dark);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.4);
+}
+
+.art-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 30px rgba(255, 0, 122, 0.4);
+}
+
+.art-thumb img,
+.art-placeholder {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.art-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: radial-gradient(circle at top left, var(--accent-purple), #111);
+}
+
+.art-meta {
+  padding: 1rem;
+}
+
+.art-title {
+  margin: 0 0 0.25rem;
+}
+
+.art-artist,
+.art-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   PROFILE PAGE
+========================================================= */
+
+.section-profile {
+  padding: 2rem 0;
+}
+
+.profile-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Left side card */
+.profile-sidebar {
+  flex: 0 0 260px;
+}
+
+.profile-card {
+  background: var(--card-dark);
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.profile-name {
+  margin: 0 0 0.3rem;
+}
+
+.profile-handle {
+  margin: 0 0 0.8rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.profile-bio {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.profile-stats {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.profile-stat {
+  text-align: center;
+}
+
+.profile-stat-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.profile-stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Right side: artworks */
+.profile-main {
+  flex: 1 1 320px;
+}
+
+.profile-section {
+  margin-bottom: 2rem;
+}
+
+.gallery-grid-small {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.site-footer {
+  padding: 2rem;
+  margin-top: 3rem;
+  text-align: center;
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+  .auth-hero {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .auth-layout {
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
+
+  .auth-panel {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .auth-copy {
+    max-width: 100%;
+  }
+
   .auth-highlight-list {
     justify-items: center;
+  }
+
+  .profile-layout {
+    flex-direction: column;
   }
 }

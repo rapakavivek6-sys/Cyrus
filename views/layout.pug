@@ -1,29 +1,21 @@
 doctype html
-html(lang="en")
+html
   head
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     title= title || 'CYRUS – Collaborative Art Board'
     link(rel="stylesheet", href="/css/styles.css")
-    link(rel="preconnect", href="https://fonts.googleapis.com")
-    link(rel="preconnect", href="https://fonts.gstatic.com" crossorigin)
-    link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap", rel="stylesheet")
+
   body(class="theme-dark")
-    include partials/_header
+    // Shared header (shows Profile / Logout when currentUserId is set)
+    include partials/_header.pug
 
-    if success && success.length
-      .flash.flash-success
-        each msg in success
-          p= msg
-    if error && error.length
-      .flash.flash-error
-        each msg in error
-          p= msg
-
+    // Main page content
     main.main-container
       block content
 
-    include partials/_footer
+    // Shared footer
+    include partials/_footer.pug
 
-    script(src="/js/main.js")
     block scripts
+      //- Your page-specific scripts can be added in views if needed

@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
+
+const { requireLogin } = require('../middleware/auth');
 const teamModel = require('../models/teamModel');
 const canvasModel = require('../models/canvasModel');
+
 
 function ensureLoggedIn(req, res, next) {
   if (!req.session.userId) return res.redirect('/login');

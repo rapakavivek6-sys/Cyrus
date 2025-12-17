@@ -1,12 +1,22 @@
 extends ../layout
 
 block content
-  section.auth-hero
-    .auth-bg-orbit
-    .auth-bg-glow
+  style.
+    /* Make sure nothing can sit on top of the register form */
+    .auth-hero,
+    .auth-layout,
+    .auth-panel,
+    .auth-card,
+    .auth-card * {
+      position: relative !important;
+      z-index: 9999 !important;
+      pointer-events: auto !important;
+      opacity: 1 !important;
+    }
 
-    .auth-inner
-      .auth-header
+  section.auth-hero
+    .auth-layout
+      .auth-copy
         h1.auth-title Create your
           span.auth-logo-word CYRUS
         p.auth-subtitle A beautiful collaborative space for pixel artists.
@@ -21,39 +31,40 @@ block content
             span.bullet-dot
             | Save finished artworks to the gallery
 
-      .auth-card
-        h2.section-title Sign up
-        p.section-subtitle Let’s get your workspace ready.
+      .auth-panel
+        .auth-card
+          h2.section-title Sign up
+          p.section-subtitle Let’s get your workspace ready.
 
-        form(method="POST", action="/register")
-          .form-group
-            label(for="username") Username
-            .input-wrapper
-              span.input-icon 👤
-              input#username(type="text", name="username", required placeholder="samuel_pixel")
+          form(method="POST", action="/register")
+            .form-group
+              label(for="username") Username
+              .input-wrapper
+                span.input-icon 👤
+                input#username(type="text", name="username", required placeholder="Cyrus_pixel")
 
-          .form-group
-            label(for="display_name") Display name
-            .input-wrapper
-              span.input-icon 🎨
-              input#display_name(type="text", name="display_name", placeholder="Samuel Pixel")
+            .form-group
+              label(for="display_name") Display name
+              .input-wrapper
+                span.input-icon 🎨
+                input#display_name(type="text", name="display_name", placeholder="Cyrus Pixel")
 
-          .form-group
-            label(for="email") Email
-            .input-wrapper
-              span.input-icon ✉
-              input#email(type="email", name="email", required placeholder="you@example.com")
+            .form-group
+              label(for="email") Email
+              .input-wrapper
+                span.input-icon ✉
+                input#email(type="email", name="email", required placeholder="you@example.com")
 
-          .form-group
-            label(for="password") Password
-            .input-wrapper
-              span.input-icon 🔒
-              input#password(type="password", name="password", required placeholder="Choose a strong password")
+            .form-group
+              label(for="password") Password
+              .input-wrapper
+                span.input-icon 🔒
+                input#password(type="password", name="password", required placeholder="Choose a strong password")
 
-          .auth-actions
-            button.btn.btn-primary.btn-full(type="submit") Create account
-            a.btn-link(href="/login") Already have an account? Login →
+            .auth-actions
+              button.btn.btn-primary.btn-full(type="submit") Create account
+              a.btn-link(href="/login") Already have an account? Login →
 
-        .auth-footnote
-          p.small-text
-            | Your account gives you access to personal and team canvases.
+          .auth-footnote
+            p.small-text
+              | Your account gives you access to personal and team canvases.

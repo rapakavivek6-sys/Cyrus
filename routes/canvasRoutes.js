@@ -1,13 +1,14 @@
+// routes/canvasRoutes.js
 const express = require('express');
 const router = express.Router();
+
+const { requireLogin } = require('../middleware/auth');
 const canvasController = require('../controllers/canvasController');
 
-function ensureLoggedIn(req, res, next) {
-  if (!req.session.userId) return res.redirect('/login');
-  next();
-}
+// View a canvas (must be logged in)
+router.get('/canvas/:id', requireLogin, canvasController.showCanvas);
 
-router.get('/canvas/:id', ensureLoggedIn, canvasController.showCanvas);
-router.post('/canvas/save', ensureLoggedIn, canvasController.saveCanvas);
+// Save the current canvas to the gallery (AJAX from client)
+router.post('/canvas/save', requireLogin, canvasController.saveCanvas);
 
 module.exports = router;

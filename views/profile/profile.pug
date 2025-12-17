@@ -7,13 +7,35 @@ block content
         .profile-card
           .profile-avatar
             span.avatar-initial= (user && user.display_name ? user.display_name.charAt(0) : 'S')
-          h2.profile-name= user && user.display_name ? user.display_name : 'Pixel Artist'
-          p.profile-handle @cyrus_artist
+
+          // Main name
+          h2.profile-name= user && user.display_name ? user.display_name : (user && user.username ? user.username : 'Pixel Artist')
+
+          // Handle from username if we have it
+          if user && user.username
+            p.profile-handle @#{user.username}
+          else
+            p.profile-handle @cyrus_artist
+
+          // Short bio
           if user && user.bio
             p.profile-bio= user.bio
           else
             p.profile-bio Lover of collaborative pixel art, sunsets, and neon vibes.
 
+          // === Account details from login ===
+          if user
+            .profile-details
+              if user.username
+                p
+                  strong Username:
+                  |  #{user.username}
+              if user.email
+                p
+                  strong Email:
+                  |  #{user.email}
+
+          // Stats
           .profile-stats
             .profile-stat
               span.profile-stat-number= stats && stats.artwork_count ? stats.artwork_count : 0
@@ -25,7 +47,9 @@ block content
               span.profile-stat-number 4.8★
               span.profile-stat-label Rating
 
+          // Actions
           a.btn.btn-outline.btn-full(href="/profile/edit") Edit Profile
+          a.btn.btn-primary.btn-full(href="/logout") Logout
 
       .profile-main
         .profile-section

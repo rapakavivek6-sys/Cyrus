@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { requireLogin } = require('../middleware/auth');
 const profileController = require('../controllers/profileController');
 
 function ensureLoggedIn(req, res, next) {

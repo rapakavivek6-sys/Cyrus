@@ -1,6 +1,6 @@
 const userModel = require('../models/userModel');
 const artworkModel = require('../models/artworkModel');
-const pool = require('../config/db');
+const pool = require('../db/index');
 
 module.exports = {
   async showProfile(req, res) {

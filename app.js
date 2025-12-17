@@ -1,3 +1,4 @@
+// ====== CORE IMPORTS ======
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
@@ -6,6 +7,10 @@ const flash = require('connect-flash');
 const methodOverride = require('method-override');
 const { port, sessionSecret } = require('./config/config');
 
+// DB pool (mysql2/promise) from /db/index.js
+const db = require('./db/index');
+
+// ====== ROUTES ======
 const indexRoutes = require('./routes/indexRoutes');
 const authRoutes = require('./routes/authRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
@@ -14,44 +19,53 @@ const profileRoutes = require('./routes/profileRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const workspaceRoutes = require('./routes/workspaceRoutes');
 
+// ====== MODELS ======
 const canvasModel = require('./models/canvasModel');
 
+// ====== APP + HTTP + SOCKET.IO ======
 const app = express();
-
-/* HTTP server + Socket.IO */
 const http = require('http').createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(http);
 
-// ====== View engine ======
+// ====== VIEW ENGINE ======
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-// ====== Middleware ======
+// ====== MIDDLEWARE ======
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Sessions (simple express-session)
 app.use(
   session({
-    secret: sessionSecret,
+    secret: sessionSecret || 'cyrus_fallback_secret',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 4 // 4 hours
+    }
   })
 );
+
+// Flash messages
 app.use(flash());
 
-// Make session data/string messages visible in views
+// Make session + flash data available in all views
 app.use((req, res, next) => {
   res.locals.currentUserId = req.session.userId || null;
+  res.locals.currentUsername = req.session.username || null;
+  res.locals.currentDisplayName = req.session.displayName || null;
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
 });
+// ====== ROUTES ======
 
-// ====== Routes ======
+// Main app routes
 app.use(indexRoutes);
 app.use(authRoutes);
 app.use(galleryRoutes);
@@ -60,12 +74,28 @@ app.use(profileRoutes);
 app.use(adminRoutes);
 app.use(workspaceRoutes);
 
-// 404 fallback
+// Simple DB test route (for debugging DB connection)
+app.get('/db-test', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT 1 + 1 AS result');
+    res.send('DB OK: ' + rows[0].result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('DB ERROR: ' + err.message);
+  }
+});
+
+// Debug login page you used earlier
+app.get('/debug-login', (req, res) => {
+  res.render('debug-login');
+});
+
+// 404 fallback (keep AFTER all other routes)
 app.use((req, res) => {
   res.status(404).render('index', { title: 'Not found - CYRUS' });
 });
 
-// ====== REAL-TIME LAYER ======
+// ====== REAL-TIME LAYER (Socket.IO) ======
 io.on('connection', (socket) => {
   console.log('🔌 New client connected:', socket.id);
 
@@ -122,7 +152,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// Start server
+// ====== START SERVER ======
 http.listen(port, () => {
   console.log(`CYRUS running at http://localhost:${port}`);
 });
+
+module.exports = { app, http, io };

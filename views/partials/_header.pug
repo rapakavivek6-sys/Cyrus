@@ -6,9 +6,11 @@ header.site-header
 
   nav.site-nav
     ul.nav-list
-      li: a(href="/workspaces") Workspaces
-      li: a(href="/gallery") Gallery
+      li: a(href="/") Home
+
       if currentUserId
+        li: a(href="/workspaces") Workspaces
+        li: a(href="/gallery") Gallery
         li: a(href="/profile") Profile
         li: a(href="/logout") Logout
       else

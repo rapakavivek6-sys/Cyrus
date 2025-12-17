@@ -1,4 +1,5 @@
-const pool = require('../config/db');
+const pool = require('../db/index');
+
 
 module.exports = {
   async createTeam(name, ownerId) {
