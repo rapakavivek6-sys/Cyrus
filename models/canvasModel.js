@@ -1,6 +1,20 @@
+// models/canvasModel.js
 const pool = require('../db/index');
 
 module.exports = {
+  // ✅ Find an existing canvas by team + name (so team shares the same canvas)
+  async getCanvasByTeamAndName(teamId, name) {
+    const [rows] = await pool.query(
+      `SELECT id, name, team_id
+       FROM canvases
+       WHERE team_id = ? AND name = ?
+       LIMIT 1`,
+      [teamId, name]
+    );
+
+    return rows.length ? rows[0] : null;
+  },
+
   async createCanvas({ teamId, name, createdBy }) {
     const [res] = await pool.query(
       `INSERT INTO canvases (team_id, name, state_json, created_by)
@@ -21,8 +35,8 @@ module.exports = {
   async getCanvasesForTeam(teamId) {
     const [rows] = await pool.query(
       `SELECT * FROM canvases
-        WHERE team_id = ?
-        ORDER BY updated_at DESC`,
+       WHERE team_id = ?
+       ORDER BY updated_at DESC`,
       [teamId]
     );
     return rows;
@@ -32,8 +46,8 @@ module.exports = {
     const json = JSON.stringify(stateArray);
     await pool.query(
       `UPDATE canvases
-          SET state_json = ?
-        WHERE id = ?`,
+       SET state_json = ?
+       WHERE id = ?`,
       [json, id]
     );
   },
@@ -43,7 +57,7 @@ module.exports = {
     if (!canvas || !canvas.state_json) return [];
     try {
       return JSON.parse(canvas.state_json);
-    } catch {
+    } catch (e) {
       return [];
     }
   },

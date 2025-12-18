@@ -32,7 +32,7 @@ if (canvas) {
   function setActiveSwatch(color) {
     if (!paletteContainer) return;
     const swatches = paletteContainer.querySelectorAll('.color-swatch');
-    swatches.forEach(swatch => {
+    swatches.forEach((swatch) => {
       if (swatch.dataset.color.toLowerCase() === color.toLowerCase()) {
         swatch.classList.add('is-active');
       } else {
@@ -43,7 +43,7 @@ if (canvas) {
 
   // Actually create the swatch buttons
   if (paletteContainer) {
-    PALETTE_COLORS.forEach(hex => {
+    PALETTE_COLORS.forEach((hex) => {
       const swatch = document.createElement('button');
       swatch.type = 'button';
       swatch.className = 'color-swatch';
@@ -67,6 +67,10 @@ if (canvas) {
   const canvasId = parseInt(canvas.dataset.canvasId, 10);
   const socket = io();
 
+  socket.on('connect', () => {
+    console.log('✅ socket connected', socket.id, 'canvasId=', canvasId);
+  });
+
   let drawing = false;
   let currentColor = colorPicker ? colorPicker.value : '#ff007a';
   const pixelSize = 10;
@@ -88,10 +92,8 @@ if (canvas) {
     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-    const x =
-      Math.floor((clientX - rect.left) / pixelSize) * pixelSize;
-    const y =
-      Math.floor((clientY - rect.top) / pixelSize) * pixelSize;
+    const x = Math.floor((clientX - rect.left) / pixelSize) * pixelSize;
+    const y = Math.floor((clientY - rect.top) / pixelSize) * pixelSize;
     return { x, y };
   }
 
@@ -105,7 +107,7 @@ if (canvas) {
 
   socket.on('init_canvas', (state) => {
     clearCanvas();
-    state.forEach(item => {
+    state.forEach((item) => {
       if (item.type === 'pixel') {
         drawPixel(item.x, item.y, item.color);
       }
@@ -182,7 +184,8 @@ if (canvas) {
           body: JSON.stringify({
             title,
             description: 'Created on CYRUS collaborative canvas',
-            imageUrl
+            imageUrl,
+            canvasId // ✅ added for "Edit Again"
           })
         });
 
@@ -202,7 +205,7 @@ if (canvas) {
 
   // Receive updates from other users
   socket.on('canvas_update', ({ ops }) => {
-    ops.forEach(op => {
+    ops.forEach((op) => {
       if (op.type === 'pixel') {
         drawPixel(op.x, op.y, op.color);
       }

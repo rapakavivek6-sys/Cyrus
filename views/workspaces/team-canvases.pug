@@ -4,20 +4,33 @@ block content
   section.section
     .section-header
       h2.section-title Team Canvases
-      p.section-subtitle Choose a canvas or create a new one.
+      p.section-subtitle Open an existing shared canvas, or create one. Tip: if you create a canvas with an existing name, you’ll be redirected to the shared one.
 
-    form(method="POST", action=`/workspaces/${teamId}/canvases`)
+    // ===== Create / Join shared canvas by name =====
+    form(method="POST", action=`/workspaces/${teamId}/canvases`).canvas-create
       .form-group
-        label(for="name") New canvas name
-        input#name(type="text", name="name", placeholder="New collaborative canvas", required)
-      button.btn.btn-primary(type="submit") Create Canvas
+        label(for="name") Canvas name (shared)
+        input#name(
+          type="text",
+          name="name",
+          placeholder="e.g., Team Board"
+          required
+          autocomplete="off"
+        )
+        small.form-hint
+          | Use the same name as your teammates to join the same shared canvas.
+      button.btn.btn-primary(type="submit") Create / Join
 
+    // ===== Existing canvases =====
     .canvas-list
       if canvases && canvases.length
         each c in canvases
           .canvas-card(reveal)
-            a(href=`/canvas/${c.id}`)
-              h3.canvas-title= c.name
-              p.canvas-meta Last updated: #{c.updated_at}
+            .canvas-card-body
+              .canvas-card-head
+                h3.canvas-title= c.name
+                if c.updated_at
+                  p.canvas-meta Last updated: #{c.updated_at}
+              a.btn.btn-outline(href=`/canvas/${c.id}`) Open Canvas
       else
-        p.no-data No canvases yet. Create one above.
+        p.no-data No canvases yet. Create one above (e.g., “Team Board”).

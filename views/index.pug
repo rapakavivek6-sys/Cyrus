@@ -6,16 +6,22 @@ block content
       h1.hero-title
         | CYRUS
         span.highlight Collaborative Canvas for Small Teams
+
       p.hero-subtitle
-        | Claim your space, paint with friends, and turn pixels into beautiful stories in real time.
+        | Create or join shared canvases, draw together in real time, and turn pixels into beautiful stories.
 
       .hero-actions
-        a.btn.btn-primary(href="/register") Get Started
-        a.btn.btn-outline(href="/gallery") Explore Gallery
+        if !currentUserId
+          a.btn.btn-primary(href="/register") Get Started
+          a.btn.btn-outline(href="/login") Login
+        else
+          a.btn.btn-primary(href="/workspaces") Go to Workspaces
+          a.btn.btn-outline(href="/gallery") Explore Gallery
 
     .hero-art
       .pixel-orbit
       .pixel-tile-grid
       .floating-card
-        h3.card-title Live Collaboration
-        p.card-text Watch your team draw with you, stroke by stroke.
+        h3.card-title Real-time Team Canvas
+        p.card-text
+          | Invite up to 5 collaborators to the same canvas and create together instantly.

@@ -22,12 +22,23 @@ module.exports = {
     return rows[0];
   },
 
-  async createArtwork({ title, description, imageUrl, userId }) {
+  // ✅ UPDATED: also saves canvas_id + state_json
+  async createArtwork({ title, description, imageUrl, userId, canvasId, stateJson }) {
     const [result] = await pool.query(
-      `INSERT INTO artworks (title, description, image_url, created_by)
-       VALUES (?, ?, ?, ?)`,
-      [title, description, imageUrl, userId]
+      `INSERT INTO artworks (title, description, image_url, created_by, canvas_id, state_json)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [title, description, imageUrl, userId, canvasId || null, stateJson || null]
     );
     return result.insertId;
+  },
+
+  // ✅ NEW: update existing artwork (used by Edit Artwork page)
+  async updateArtwork(id, { title, description, imageUrl, stateJson }) {
+    await pool.query(
+      `UPDATE artworks
+       SET title = ?, description = ?, image_url = ?, state_json = ?
+       WHERE id = ?`,
+      [title, description, imageUrl, stateJson, id]
+    );
   }
 };

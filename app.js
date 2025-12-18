@@ -18,6 +18,8 @@ const canvasRoutes = require('./routes/canvasRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const workspaceRoutes = require('./routes/workspaceRoutes');
+const artworkEditRoutes = require('./routes/artworkRoutes');
+
 
 // ====== MODELS ======
 const canvasModel = require('./models/canvasModel');
@@ -73,6 +75,7 @@ app.use(canvasRoutes);
 app.use(profileRoutes);
 app.use(adminRoutes);
 app.use(workspaceRoutes);
+app.use(artworkEditRoutes);
 
 // Simple DB test route (for debugging DB connection)
 app.get('/db-test', async (req, res) => {
@@ -104,6 +107,8 @@ io.on('connection', (socket) => {
     const roomName = `canvas_${canvasId}`;
     const room = io.sockets.adapter.rooms.get(roomName);
     const currentCount = room ? room.size : 0;
+    console.log('JOIN request', socket.id, canvasId);
+
 
     // Max 5 concurrent collaborators
     if (currentCount >= 5) {

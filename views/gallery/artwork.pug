@@ -16,4 +16,8 @@ block content
         if artwork.description
           p.art-description= artwork.description
 
-        a.btn.btn-outline(href="/gallery") ← Back to gallery
+        .artwork-actions
+          // ✅ NEW: Edit the saved artwork (loads state_json into editable canvas)
+          a.btn.btn-primary(href=`/artwork/${artwork.id}/edit`) Edit Artwork
+
+          a.btn.btn-outline(href="/gallery") ← Back to gallery

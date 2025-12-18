@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  section.section.section-canvas
+    .section-header
+      h2.section-title Edit Artwork: #{artwork.title}
+      p.section-subtitle This edits the saved gallery artwork and updates it.
+
+    .canvas-toolbar
+      .tool-group
+        label.tool-label(for="colorPicker") Colour
+        input#colorPicker(type="color", value="#ff007a")
+
+      .tool-group.tool-actions
+        button#btnClear.btn.btn-outline(type="button") Clear
+        button#btnSave.btn.btn-primary(type="button") Update Artwork
+
+    .canvas-wrapper
+      canvas#cyrusCanvas(
+        width="960",
+        height="540",
+        data-artwork-id=artwork.id
+      )
+
+block scripts
+  // Provide artwork data + saved state to the editor JS
+  script.
+    window.__ARTWORK__ = {
+      id: #{artwork.id},
+      title: !{JSON.stringify(artwork.title)},
+      description: !{JSON.stringify(artwork.description || '')},
+      state_json: !{JSON.stringify(artwork.state_json || '[]')}
+    };
+  script(src="/js/editArtwork.js")
